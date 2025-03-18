@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Define the array of items
-my_array=("binance" "okx")
+# my_array=("binance" "okx")
+my_array=()
+items=$(echo "$EXCHANGES_JSON" | sed 's/^\[//;s/\]$//;s/"//g;s/ //g')
+IFS=',' read -ra my_array <<< "$items"
 
 # Define the marker string
 marker="### XYZ"
