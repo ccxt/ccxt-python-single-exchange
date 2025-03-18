@@ -19,7 +19,7 @@ generate_list_items() {
     list_string+="- [$item](${repo_prefix}${item})\n"
   done
 
-  echo "$list_string"
+  printf "%s" "$list_string" # using printf instead of echo
 }
 
 # Check if the README file exists
