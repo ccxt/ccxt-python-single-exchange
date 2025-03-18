@@ -45,5 +45,4 @@ async def main():
     instance = BybitWs({})
     while True:
         orders = await instance.watch_orders(__EXAMPLE_SYMBOL__)
-```
-
+```\n### XYZ\n- [binance](https://github.com/my/binance)\n
