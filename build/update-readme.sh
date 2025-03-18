@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the array of items
-my_array=("binance" "okx")
+my_array=("binance" "okx" "kucoin")
 
 # Define the marker string
 marker="### XYZ"
