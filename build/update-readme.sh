@@ -1,24 +1,37 @@
 #!/bin/bash
 
-# Define array of exchanges
-EXCHANGES=("binance" "kucoin" "coinbase" "kraken" "bybit")
+# Define the array of items
+my_array=("binance" "okx")
 
-# Create the section content in a variable
-SECTION=$'\n## Exchange Repositories\n\n'
+# Define the marker string
+marker="### XYZ"
 
-# Generate links for each exchange
-for exchange in "${EXCHANGES[@]}"; do
-  SECTION+="- [python-${exchange}](https://github.com/ccxt/python-${exchange}.git)"$'\n'
-done
+# Define the README file path
+readme_file="./../README.md"
 
-# Escape special characters for Perl
-ESCAPED_SECTION=$(echo "$SECTION" | perl -pe 's/([\\$@%&*(){}[\]|+?.])/\\$1/g')
+# Function to generate the list items
+generate_list_items() {
+  local array=("${!1}") #take array as argument
+  local repo_prefix="https://github.com/my/"
 
-# Update README with perl (no temp files)
-perl -i -0pe "s/## Exchange Repositories.*?(^##|\Z)/$ESCAPED_SECTION\$1/ms" ./../README.md || {
-  # If section doesn't exist, append it
-  echo "$SECTION" >> ./../README.md
+  for item in "${array[@]}"; do
+    echo "- [$item](${repo_prefix}${item})"
+  done
 }
 
-# Display the changes
-cat ./../README.md
+# Check if the README file exists
+if [ ! -f "$readme_file" ]; then
+  echo "Error: README.md not found."
+  exit 1
+fi
+
+# Read the README file and remove everything after the marker
+content=$(sed "/$marker/q" "$readme_file")
+
+# Append the marker and the new list items
+new_content="$content\n$marker\n$(generate_list_items my_array)\n"
+
+# Write the new content to the README file
+echo "$new_content" > "$readme_file"
+
+echo "README.md updated successfully."
