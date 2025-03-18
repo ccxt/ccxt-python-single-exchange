@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the array of items
-my_array=("binance" "okx" "kucoin")
+my_array=("binance" "okx")
 
 # Define the marker string
 marker="### XYZ"
@@ -9,13 +9,12 @@ marker="### XYZ"
 # Define the README file path
 readme_file="$GITHUB_WORKSPACE/README.md"
 
-# Function to generate the list items and return the string
+# Function to generate the list items
 generate_list_items() {
-  local array=("${!1}")
   local repo_prefix="https://github.com/my/"
   local list_string=""
 
-  for item in "${array[@]}"; do
+  for item in "${my_array[@]}"; do
     list_string+="- [$item](${repo_prefix}${item})\n"
   done
 
@@ -32,7 +31,7 @@ fi
 content=$(sed "/$marker/q" "$readme_file")
 
 # Generate the list items
-list_items=$(generate_list_items my_array)
+list_items=$(generate_list_items)
 
 # Append the marker and the new list items
 new_content="$content\n$marker\n$list_items"
