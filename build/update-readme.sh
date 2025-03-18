@@ -7,7 +7,7 @@ my_array=("binance" "okx")
 marker="### XYZ"
 
 # Define the README file path
-readme_file="./../README.md"
+readme_file="$GITHUB_WORKSPACE/README.md"
 
 # Function to generate the list items
 generate_list_items() {
