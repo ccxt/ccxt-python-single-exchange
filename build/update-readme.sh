@@ -6,7 +6,7 @@ items=$(echo "$EXCHANGES_JSON" | sed 's/^\[//;s/\]$//;s/"//g;s/ //g')
 IFS=',' read -ra my_array <<< "$items"
 
 # Define the marker string
-marker="### XYZ"
+marker="### See our other exchanges"
 
 # Define the README file path
 readme_file="$GITHUB_WORKSPACE/README.md"
@@ -17,7 +17,7 @@ generate_list_items() {
   local list_string=""
 
   for item in "${my_array[@]}"; do
-    list_string+="- [$item](${repo_prefix}${item})\n"
+    list_string+="- [$item-python sdk](${repo_prefix}${item})\n"
   done
 
   printf "%s" "$list_string"

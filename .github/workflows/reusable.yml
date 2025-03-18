@@ -1,6 +1,9 @@
 # .github/workflows/reusable-workflow.yml
 name: branch default workflow
 
+env:
+  EXCHANGES_JSON: '["binance", "okx", "kraken", "coinbase", "bybit"]'
+
 on:
   workflow_call:
     inputs:
