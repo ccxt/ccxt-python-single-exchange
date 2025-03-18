@@ -17,7 +17,7 @@ generate_list_items() {
   local list_string=""
 
   for item in "${my_array[@]}"; do
-    list_string+="- [$item-python sdk](${repo_prefix}${item})\n"
+    list_string+="- [**$item** python](${repo_prefix}${item})\n"
   done
 
   printf "%s" "$list_string"
