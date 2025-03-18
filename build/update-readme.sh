@@ -19,7 +19,7 @@ generate_list_items() {
     list_string+="- [$item](${repo_prefix}${item})\n"
   done
 
-  printf "%s" "$list_string" # using printf instead of echo
+  printf "%s" "$list_string"
 }
 
 # Check if the README file exists
@@ -38,6 +38,6 @@ list_items=$(generate_list_items my_array)
 new_content="$content\n$marker\n$list_items"
 
 # Write the new content to the README file
-echo "$new_content" > "$readme_file"
+echo -e "$new_content" > "$readme_file" # -e to process escape sequences
 
 echo "README.md updated successfully."
