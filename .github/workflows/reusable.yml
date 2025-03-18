@@ -57,6 +57,8 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Update README with repository links
+        env:
+          EXCHANGES_JSON: '["binance", "okx", "kraken", "coinbase", "bybit"]'
         run: chmod +x ./build/update-readme.sh && ./build/update-readme.sh
       
       - name: Commit and push changes
