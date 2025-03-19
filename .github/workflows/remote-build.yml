@@ -8,22 +8,17 @@ env:
   EXCHANGES_JSON: '["binance", "okx", "kraken", "coinbase", "bybit"]'
       
 jobs:
-  check_repo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check repository name
-        id: check
-        run: |
-          if [ "${{ github.event.repository.name }}" == "ccxt-python-single-exchange" ]; then
-            echo "Repository is xyz, cancelling workflow"
-            exit 0
-          fi
-
   build_for_pypi:
-    if: (contains(github.event.head_commit.message, '[BUILD]'))
-    name: distribute-job
+    if: ${{ !endsWith(github.repository, '/ccxt-python-single-exchange') }} && (contains(github.event.head_commit.message, '[BUILD]'))
     runs-on: ubuntu-latest
     steps:
+      # - name: Check repository name
+      #   id: check
+      #   run: |
+      #     if [ "${{ github.event.repository.name }}" == "ccxt-python-single-exchange" ]; then
+      #       echo "Repository is xyz, cancelling workflow"
+      #       exit 0
+      #     fi
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -33,7 +28,7 @@ jobs:
         run: echo "something"
       
   readme_update:
-    name: readme-upd
+    if: ${{ !endsWith(github.repository, '/ccxt-python-single-exchange') }} && (contains(github.event.head_commit.message, '[BUILD]'))
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
