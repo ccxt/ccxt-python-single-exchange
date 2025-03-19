@@ -34,7 +34,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "[BUILD]: ${{ github.sha }}"
+          git commit -m "[BUILD]: ${{ github.sha }}" || echo "No changes to commit"
           git push origin main --force
   
       # - name: Push to another repo (approach B)
