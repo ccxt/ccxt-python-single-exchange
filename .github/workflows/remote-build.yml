@@ -9,7 +9,7 @@ env:
       
 jobs:
   build_for_pypi:
-    if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' }} && contains(github.event.head_commit.message, '[BUILD]')
+    if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' && contains(github.event.head_commit.message, '[BUILD]') }}
     runs-on: ubuntu-latest
     steps:
       # - name: Check repository name
