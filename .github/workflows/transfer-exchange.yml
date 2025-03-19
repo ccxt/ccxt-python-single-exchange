@@ -11,7 +11,7 @@ on:
 
 jobs:
   distribute_job:
-    if: (contains(github.event.head_commit.message, 'build') && !contains(github.event.head_commit.message, 'skip ci'))
+    if: contains(github.event.head_commit.message, '[BUILD]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,7 +21,7 @@ jobs:
           persist-credentials: false
 
       - name: Push to another repo (approach A)
-        if: (!contains(github.event.head_commit.message, 'BUILD_WITH_REMOTE'))
+        if: (!contains(github.event.head_commit.message, 'BUILD_WITH_REPO'))
         run: |
           TEMP_DIR=$(mktemp -d)
           TEMP_DIR_GIT="$TEMP_DIR/python-${{ inputs.exchange_name }}"
@@ -34,7 +34,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "build: ${{ github.sha }}"
+          git commit -m "[BUILD]: ${{ github.sha }}"
           git push origin main --force
   
       # - name: Push to another repo (approach B)
