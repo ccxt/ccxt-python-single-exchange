@@ -1,9 +1,6 @@
 # .github/workflows/reusable-workflow.yml
 name: branch default workflow
 
-env:
-  EXCHANGES_JSON: '["binance", "okx", "kraken", "coinbase", "bybit"]'
-
 on:
   workflow_call:
     inputs:
@@ -31,6 +28,8 @@ jobs:
           TEMP_DIR_GIT="$TEMP_DIR/python-${{ inputs.exchange_name }}"
           git clone https://x-access-token:${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}@github.com/ccxt/python-${{ inputs.exchange_name }}.git $TEMP_DIR_GIT
           rsync -av --exclude='.git' ./ $TEMP_DIR_GIT
+          # remove all yml files except remoet
+          rm -f $TEMP_DIR_GIT/.github/workflows/transfer-*.yml
           cd $TEMP_DIR_GIT
           git config user.name github-actions
           git config user.email github-actions@github.com
@@ -48,26 +47,3 @@ jobs:
       #     git fetch --unshallow origin
       #     git pull --allow-unrelated-histories prod main || echo "Git pull failed"
       #     git push prod main --force
-
-      
-  readme_update:
-    name: readme-upd
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-
-      - name: Update README with repository links
-        env:
-          EXCHANGES_JSON: '["binance", "okx", "kraken", "coinbase", "bybit"]'
-        run: chmod +x ./build/update-readme.sh && ./build/update-readme.sh
-      
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add README.md
-          git commit -m "Update README with exchange repository links" || echo "No changes to commit"
-          git push
