@@ -12,13 +12,6 @@ jobs:
     if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' && contains(github.event.head_commit.message, '[BUILD]') }}
     runs-on: ubuntu-latest
     steps:
-      # - name: Check repository name
-      #   id: check
-      #   run: |
-      #     if [ "${{ github.event.repository.name }}" == "ccxt-python-single-exchange" ]; then
-      #       echo "Repository is xyz, cancelling workflow"
-      #       exit 0
-      #     fi
       - name: Checkout code
         uses: actions/checkout@v4
         with:

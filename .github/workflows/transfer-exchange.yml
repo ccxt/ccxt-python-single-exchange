@@ -20,8 +20,7 @@ jobs:
           ref: ${{ github.ref }}
           persist-credentials: false
 
-      - name: Push to another repo (approach A)
-        if: (!contains(github.event.head_commit.message, 'BUILD_WITH_REPO'))
+      - name: Push to another repo
         run: |
           TEMP_DIR=$(mktemp -d)
           TEMP_DIR_GIT="$TEMP_DIR/python-${{ inputs.exchange_name }}"
@@ -37,9 +36,7 @@ jobs:
           git commit -m "[BUILD]: ${{ github.sha }}" || echo "No changes to commit"
           git push origin main --force
   
-      # - name: Push to another repo (approach B)
-      #   if: (contains(github.event.head_commit.message, 'BUILD_WITH_REMOTE'))
-      #   run: |
+      ##### APPROACH 2 #####
       #     git config user.name github-actions
       #     git config user.email github-actions@github.com
       #     git remote add prod https://x-access-token:${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}@github.com/ccxt/python-${{ inputs.exchange_name }}.git
