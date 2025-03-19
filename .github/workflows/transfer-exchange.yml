@@ -22,18 +22,8 @@ jobs:
 
       - name: Push to another repo
         run: |
-          TEMP_DIR=$(mktemp -d)
-          TEMP_DIR_GIT="$TEMP_DIR/python-${{ inputs.exchange_name }}"
-          git clone https://x-access-token:${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}@github.com/ccxt/python-${{ inputs.exchange_name }}.git $TEMP_DIR_GIT
-          rsync -av --exclude='.git' ./ $TEMP_DIR_GIT
-          # remove all yml files except remoet
-          dir $TEMP_DIR_GIT/.github/workflows/
-          rm -f $TEMP_DIR_GIT/.github/workflows/transfer-all.yml && rm -f $TEMP_DIR_GIT/.github/workflows/transfer-exchange.yml
-          cd $TEMP_DIR_GIT
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          (git commit -m "[BUILD]: ${{ github.sha }}" && git push origin main --force) || echo "No changes to commit"
+          chmod +x .github/scripts/push-to-repo.sh
+          .github/scripts/push-to-repo.sh "${{ inputs.exchange_name }}" "${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}" "${{ github.sha }}"
           
   
       ##### APPROACH 2 #####
