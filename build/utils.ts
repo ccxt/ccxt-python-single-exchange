@@ -48,6 +48,11 @@ function regexAll (text: string, array: any[]) {
 
 
 
+function jsonFromFile (path: string) {
+    return JSON.parse(fs.readFileSync(path).toString());
+}
+
+
 const argvs = process.argv.slice(2);
 let exchange = argvs[0];
 if (!exchange || exchange.includes('--')) {
@@ -70,6 +75,7 @@ export {
     exec,
     execSync,
     argvs,
+    jsonFromFile,
     exchange as exchangeArgv,
 }
 
