@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import path from 'path'
+import * as semver from 'semver';
 
 import { argvs, mkdir, jsonFromFile, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
@@ -13,7 +14,8 @@ class pypi {
     exchangeConfigs:any;
     pypiApiSecret:any;
     rootDir:string = __dirname + `/../`;
-    
+    tempPyDir:string = this.rootDir + `/temp_pypi/`;
+
     constructor(exchange: string, pypiApiSecret: string) {
         this.exchange = exchange;
         this.exchangeConfigs = jsonFromFile(__dirname + `/global-configs.json`)['exchanges'];
@@ -23,26 +25,27 @@ class pypi {
 
     init(exchange) {
         // create skeleton dirs
-        const tmpDir = this.rootDir + `/temp_pypi/`;
-        mkdir (tmpDir);
-        mkdir (tmpDir + '/tests/'); // just empty folder
+        mkdir (this.tempPyDir);
+        mkdir (this.tempPyDir + '/tests/'); // just empty folder
         // copy python folder to temp dir
         const pypiPackageName = this.exchangeConfigs[exchange].__PYTHON_PACKAGE_NAME__;
-        const pypiPackageNameSanitized = this.sanitizeFolderName(pypiPackageName);
-        const pkgDir = tmpDir + '/src/' + pypiPackageNameSanitized;
+        const pypiPackageNameSanitized = this.sanitizeFolderName (pypiPackageName);
+        const pkgDir = this.tempPyDir + '/src/' + pypiPackageNameSanitized;
         mkdir (pkgDir);
-        cp(this.rootDir + `/${this.exchange}`, pkgDir);
+        cp (this.rootDir + `/${this.exchange}`, pkgDir);
         // copy readme
-        cp(this.rootDir + `/README.md`, tmpDir + '/README.md');
+        cp (this.rootDir + `/README.md`, this.tempPyDir + '/README.md');
         // write pyproject.toml
-        fs.writeFileSync(tmpDir + '/pyproject.toml', this.pyprojectTolmContent(pypiPackageNameSanitized));
+        const verion = this.defineVersion ();
+        fs.writeFileSync(this.tempPyDir + '/pyproject.toml', this.pyprojectTolmContent(pypiPackageNameSanitized));
+        this.pythonPackageBuild ();
     }
 
     sanitizeFolderName (name:string) {
         return name.replace(/-/g, '_');
     }
 
-    pyprojectTolmContent(pypiPackageNameSanitized:string) {
+    pyprojectTolmContent(pypiPackageNameSanitized:string, newVersion: string) {
         const content = '' +
             `[build-system]\n` +
             `requires = ["hatchling"]\n` +
@@ -53,7 +56,7 @@ class pypi {
             `\n` +
             `[project]\n` +
             `name = "${pypiPackageNameSanitized}"\n` +
-            `version = "0.0.1"\n` +
+            `version = "` + newVersion + `"\n` +
             `authors = [\n` +
             `    { name="Example Author", email="author@example.com" },\n` +
             `]\n` +
@@ -73,6 +76,20 @@ class pypi {
         ;
         return content;
     }
+
+    defineVersion () {
+        const res = execSync(`pip index versions ` + this.exchangeConfigs[this.exchange].__PYTHON_PACKAGE_NAME__);
+        const versions = res.toString().trim();
+        const currentVersion = versions.match(/\((\S+)\)/);
+        const newVersion = semver.inc(currentVersion, 'patch');
+        return newVersion;
+    }
+
+    pythonPackageBuild () {
+        const res = execSync(`cd ${this.tempPyDir} && python -m build`);
+        console.log(res.toString());
+    }
+
 }
 
 // check if environment variabele exist
