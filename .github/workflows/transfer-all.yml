@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  use-reusable-workflow:
+  transfer-step:
     strategy:
       matrix:
         exchange_name: [kucoin] # ['binance', 'bingx', 'bitget', 'bitmart', 'bitmex', 'bybit', 'coinex', 'cryptocom', 'gate', 'hashkey', 'htx', 'hyperliquid', 'kucoin', 'kucoinfutures', 'mexc', 'okx', 'woo', 'woofipro']
