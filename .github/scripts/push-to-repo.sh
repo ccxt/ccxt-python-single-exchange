@@ -13,13 +13,11 @@ git clone https://x-access-token:$API_TOKEN@github.com/ccxt/$EXCHANGE_NAME-pytho
 rm -rf $TEMP_DIR_GIT/*
 rm -rf $TEMP_DIR_GIT/.github/*
 rsync -av --exclude='.git' ./ $TEMP_DIR_GIT
-# remove all yml files except remote
-dir $TEMP_DIR_GIT/.github/workflows/
 rm -f $TEMP_DIR_GIT/.github/workflows/transfer-all.yml && rm -f $TEMP_DIR_GIT/.github/workflows/transfer-exchange.yml
 cd $TEMP_DIR_GIT
 git config user.name github-actions
 git config user.email github-actions@github.com
 git add .
 rm -f README.md
-echo $EXCHANGE_NAME > name
+echo $EXCHANGE_NAME > exchange_name
 (git commit -m "[BUILD]: $GITHUB_SHA" && git push origin main --force) || echo "No changes to commit"
