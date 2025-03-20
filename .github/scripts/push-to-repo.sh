@@ -11,6 +11,7 @@ TEMP_DIR_GIT="$TEMP_DIR/$EXCHANGE_NAME-python"
 echo "Cloning $EXCHANGE_NAME-python repository into $TEMP_DIR_GIT"
 git clone https://x-access-token:$API_TOKEN@github.com/ccxt/$EXCHANGE_NAME-python.git $TEMP_DIR_GIT
 # at first, clean th directory (except .git directory) and copy all files
+echo "Clone finished"
 rm -rf $TEMP_DIR_GIT/*
 rm -rf $TEMP_DIR_GIT/.github/*
 rsync -av --info=progress2 --info=name0 --exclude='.git/' --exclude='tmp/' --exclude='build/ccxt/' ./ $TEMP_DIR_GIT
@@ -21,4 +22,4 @@ git config user.email github-actions@github.com
 git add .
 rm -f README.md
 echo $EXCHANGE_NAME > exchange_name
-# (git commit -m "[BUILD]: $GITHUB_SHA" && git push origin main --force) || echo "No changes to commit"
+(git commit -m "[BUILD]: $GITHUB_SHA" && git push origin main --force) || echo "No changes to commit"
