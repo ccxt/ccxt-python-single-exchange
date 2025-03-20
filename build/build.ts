@@ -145,14 +145,16 @@ class build {
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
         ]);
-        const otherStrings = [
-            '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__',
-            '__PYTHON_PACKAGE_NAME__',
-            '__TEST_SYMBOL__',
-        ];
+        const otherStrings = {
+            '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
+            '__PYTHON_PACKAGE_NAME__': undefined,
+            '__TEST_SYMBOL__': 'BTC/USDC',
+        };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
         for (const key in otherStrings) {
-            newText = newText.replace(new RegExp(`${key}`, 'g'), exchangeConfig[key] || key);
+            const defaultValue = otherStrings[key];
+            let value = exchangeConfig[key] || defaultValue; // at first, read from config, if not, use default
+            newText = newText.replace(new RegExp(`${key}`, 'g'), value);
         }
         return newText;
     }
