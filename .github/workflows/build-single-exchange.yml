@@ -34,7 +34,6 @@ jobs:
           chmod +x .github/scripts/pushback.sh
           .github/scripts/pushback.sh
 
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -46,5 +45,12 @@ jobs:
           pip install build twine
             
       - name: Build package
-        working-directory: path/my/dir
-        run: python -m build
+        run: |
+          cd temp_pypi
+          python -m build
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_SECRET }}
+        run: twine upload dist/*
