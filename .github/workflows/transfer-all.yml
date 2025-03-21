@@ -8,7 +8,7 @@ jobs:
   transfer-step:
     strategy:
       matrix:
-        exchange_name: ['htx',  'woo' ]
+        exchange_name: ['binance', 'bingx', 'bitget', 'bitmart', 'bitmex', 'bybit', 'coinex', 'cryptocom', 'gate', 'hashkey', 'htx', 'hyperliquid', 'kucoin', 'kucoinfutures', 'mexc', 'okx', 'woo', 'woofipro']
     uses: ./.github/workflows/transfer-exchange.yml
     with:
       exchange_name: ${{ matrix.exchange_name }}
