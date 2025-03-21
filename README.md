@@ -10,6 +10,6 @@ this is internal dev repo, not meant to be used by end users.
 
 - Immediately, as those repositories get `push` event (if commit message contains the phrase `[BUILD]`) the individual exchange repos start build with `.github/workflows/build-single-exchange.yml` flow, so the exchange-specific package is generated from raw skeleton repo & ccxt files. 
 
-- If commit message also contained the phrase `[PUBLISH]` then they will push a package to pypi.org (you should set `PYPI_API_SECRET_SP` secret with pypi api key, under each repository). Versions are incremental by patch version at this moment.
+- If commit message contains the phrase `[PUBLISH]` (instead of `[BUILD]`) then repo will make a python package & submits it to pypi.org (you should set `PYPI_API_SECRET_SP` secret with pypi api key, under each repository). Versions are incremental by patch version at this moment.
 
 - All other things are WIP and can be customized.
