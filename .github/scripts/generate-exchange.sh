@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # for easy testing, we can make this script separate
-$TEMP_DIR_GIT=$1
-$EXCHANGE_NAME=$2
+TEMP_DIR_GIT=$1
+EXCHANGE_NAME=$2
 
 echo "Generating exchange repository for $EXCHANGE_NAME in $TEMP_DIR_GIT"
 
