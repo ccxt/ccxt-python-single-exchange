@@ -1,6 +1,6 @@
 # about
 
-this is dev.repo, not meant to be used by end users.
+this is internal dev repo, not meant to be used by end users.
 
 # instructions
 
