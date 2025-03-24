@@ -21,4 +21,6 @@ rm -r $TEMP_DIR_GIT/.vscode/
 rm -f $TEMP_DIR_GIT/vsc-workspace.code-workspace
 rm -f $TEMP_DIR_GIT/README.md
 rm -f $TEMP_DIR_GIT/.github/scripts/*
-rm -f $TEMP_DIR_GIT/.github/workflows/generate-and-transfer-exchanges.yml
+rm -f $TEMP_DIR_GIT/.github/workflows/*
+# copy generate-and-send-exchanges.yml
+cp -f ./../workflows/generate-and-send-exchanges.yml $TEMP_DIR_GIT/.github/workflows/
