@@ -18,12 +18,11 @@ class build {
     destinationFolder:string;
     downloadAndDelete:boolean;
 
-    constructor(exchange: string, downloadAndDelete: boolean) {
+    constructor(exchange: string) {
         this.exchange = exchange;
         this.sourceFolder = __dirname +  `/ccxt/`;
         this.destinationFolder = __dirname +  `/../${exchange}/ccxt/`;
-        this.downloadAndDelete = downloadAndDelete;
-        this.init(exchange);
+        this.downloadAndDelete = !argvs.includes('--nodownload');
     }
 
     async downloadCcxtRepo() {
@@ -187,11 +186,11 @@ class build {
         this.commonContentReplace (target);
     }
 
-    async init (exchange:string) {
+    async init () {
         if (this.downloadAndDelete) {
             await this.downloadCcxtRepo ();
         }
-        this.copyCcxtFiles (exchange);
+        this.copyCcxtFiles (this.exchange);
         await this.setAllExchangesList ();
         await this.creataPackageInitFile ();
 
@@ -209,6 +208,101 @@ class build {
         }
         console.log ("Done!");
     }
+
+
+
+    sortMethods(methods) {
+        return methods.sort((a, b) => {
+            const aPriority = a.startsWith('fetch') || a.startsWith('create') ? 0 : 1;
+            const bPriority = b.startsWith('fetch') || b.startsWith('create') ? 0 : 1;
+            return aPriority - bPriority || a.localeCompare(b);
+        });
+    }
+
+
+    updateReadme(methods, rawMethods, wsMethods, readmePath) {
+        let readmeContent = fs.readFileSync(readmePath, 'utf8');
+
+        const methodsFormatted = methods.map(method => `- \`${method}\``).join('\n');
+        const rawMethodsFormatted = rawMethods.map(method => `- \`${method}\``).join('\n');
+        const wsMethodsFormatted = wsMethods.map(method => `- \`${method}\``).join('\n');
+
+        const newMethodsSection = `### REST Unified\n\n${methodsFormatted}\n`;
+
+        const newWsMethodsSection = `### WS Unified\n\n${wsMethodsFormatted}\n`;
+
+        const newRawMethodsSection = `### REST Raw\n\n${rawMethodsFormatted}\n`;
+
+        // Replace the existing #Methods section
+        const regex = /### REST Unified\n[\s\S]*?(?=\n#|$)/;
+        if (regex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(regex, newMethodsSection);
+        } else {
+            readmeContent += `\n${newMethodsSection}`;
+        }
+
+        // handleRestRaw
+        const rawMethodRegex = /### REST Raw\n[\s\S]*?(?=\n#|$)/
+        if (rawMethodRegex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(rawMethodRegex, newRawMethodsSection);
+        } else {
+            readmeContent += `\n${newRawMethodsSection}`;
+        }
+
+        // handleWs
+        const wsRegex = /### WS Unified\n[\s\S]*?(?=\n#|$)/;
+        if (wsRegex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(wsRegex, newWsMethodsSection);
+        } else {
+            readmeContent += `\n${newWsMethodsSection}`;
+        }
+
+        fs.writeFileSync(readmePath, readmeContent, 'utf8');
+    }
+
+    async updateReadmeWithMethods() {
+        const filePath = this.destinationFolder + '/' + this.exchange + '.py';
+        const wsFilePath = this.destinationFolder + '/pro/' + this.exchange + '.py';
+        const abstractFile = this.destinationFolder + '/abstract/' + this.exchange + '.py';
+        const readme = 'README.md';
+
+
+        const content = fs.readFileSync(filePath, 'utf8');
+        const wsContent = fs.readFileSync(wsFilePath, 'utf8');
+        const abstractContent = fs.readFileSync(abstractFile, 'utf8');
+        const methodRegex = /def\s+([a-zA-Z_][a-zA-Z0-9_]*)\(([^)]*)\)/g;
+        const abstractRegex = /\s+(\w+)\s=\s\w+\s=\s/g
+        let restMethods: string[] = [];
+        let wsMethods: string[] = [];
+        let rawMethods: string[] = [];
+        let match;
+
+        while ((match = methodRegex.exec(content)) !== null) {
+            const name = match[1];
+            if (name.startsWith('parse') || name.startsWith('sign') || name.startsWith('handle') || name.startsWith('load')) {
+                continue;
+            }
+            restMethods.push(`${name}(${match[2]})`);
+        }
+
+        while ((match = methodRegex.exec(wsContent)) !== null) {
+            const name = match[1];
+            if (name.startsWith('handle') || name.startsWith('parse') || name.startsWith('request') || name.startsWith('ping')) {
+                continue;
+            }
+            wsMethods.push(`${name}(${match[2]})`);
+        }
+
+        while ((match = abstractRegex.exec(abstractContent)) !== null) {
+            const name = match[1];
+            rawMethods.push(`${name}(request)`);
+        }
+
+
+        // console.log(this.sortMethods(re))
+        this.updateReadme(this.sortMethods(restMethods), rawMethods, wsMethods, readme);
+        return restMethods;
+    }
 }
 
 
@@ -216,5 +310,9 @@ class build {
 
 
 
-const donwloadAndDelete = !argvs.includes('--nodownload');
-new build(exchangeArgv, donwloadAndDelete);
+const builder = new build(exchangeArgv);
+if (argvs[1] === '--methods') {
+    builder.updateReadmeWithMethods()
+} else {
+    builder.init()
+}
