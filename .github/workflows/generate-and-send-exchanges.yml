@@ -23,7 +23,7 @@ jobs:
         run: |
           cd .github/scripts/
           dir
-          chmod +x send-exchange-skeleton-to-repo.sh
-          send-exchange-skeleton-to-repo.sh "${{ matrix.exchange_name }}" "${{ github.event.head_commit.message }}"
+          chmod +x ./send-exchange-skeleton-to-repo.sh
+          ./send-exchange-skeleton-to-repo.sh "${{ matrix.exchange_name }}" "${{ github.event.head_commit.message }}"
         env:
           GITHUB_API_TOKEN: ${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}
