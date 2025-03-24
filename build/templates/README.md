@@ -4,7 +4,6 @@ Python SDK (sync and async) for __ExchangeName__ cryptocurrency exchange with Re
 You can check the SDK docs here: [SDK](https://docs.ccxt.com/#/exchanges/__exchangeName__)
 You can check __ExchangeName__'s docs here: [Docs](__LINK_TO_OFFICIAL_EXCHANGE_DOCS__)
 
-*This package derives from CCXT and allows you to call pretty much every endpoint by either using the unified CCXT API or calling the endpoints directly*
 
 ## Installation
 
@@ -45,6 +44,8 @@ async def main():
 asyncio.run(main())
 ```
 
+
+
 ### Websockets
 
 ```Python
@@ -58,3 +59,30 @@ async def main():
         # orders = await instance.watch_orders("__EXAMPLE_SYMBOL__")
 ```
 
+
+
+
+
+#### Raw call
+
+You can also construct custom requests to available "implicit" endpoints
+
+```Python
+        request = {
+            'type': 'candleSnapshot',
+            'req': {
+                'coin': coin,
+                'interval': tf,
+                'startTime': since,
+                'endTime': until,
+            },
+        }
+        response = await instance.public_post_info(request)
+```
+
+
+
+## Contribution
+- Give us a star :star:
+- Fork and Clone! Awesome
+- Select existing issues or create a new issue.
