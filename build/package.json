@@ -4,12 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean-extra-files": "tsx clean-extra-files.ts",
     "build-single-exchange": "tsx build.ts",
     "pypi-packager": "tsx pypi-packager.ts",
 
     "sample-generate": "cd .. && bash .github/scripts/generate-exchange-skeleton.sh ./tmp_folder kucoin",
-    "sample-clean": "cd ../tmp_folder/build && npm run clean-extra-files",
     "sample-build": "cd ../tmp_folder/build && npm run build-single-exchange",
     "sample-pypi": "cd ../tmp_folder/build && npm run pypi-packager",
     "sample-all": "npm run sample-generate && npm run sample-clean && npm run sample clean && npm run pypi-packager"
