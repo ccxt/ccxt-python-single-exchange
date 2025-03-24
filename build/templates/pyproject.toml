@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.sources]
+directory = "src"
+
+[tool.hatch.build.targets.wheel]
+sources = ["src"]
+only-include = ["src/__exchangeName__"]
+
+[project]
+name = "__PYTHON_PACKAGE_NAME__"
+version = "0.0.20"
+authors = [
+    { name="CCXT", email="info@ccxt.trade" },
+]
+description = "__exchangeName__ crypto exchange api client"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Information Technology",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "License :: OSI Approved :: MIT License",
+]
+license = {text = "MIT"}
+
+[project.urls]
+Homepage = "https://github.com/ccxt/ccxt"
+Issues = "https://github.com/ccxt/ccxt"

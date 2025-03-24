@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sample-generate": "cd .. && bash .github/scripts/generate-exchange-skeleton.sh ./tmp_folder kucoin",
     "build-single-exchange": "tsx build.ts",
-    "pypi-packager": "tsx pypi-packager.ts"
+    "pypi-packager": "tsx pypi-packager.ts",
+    "sample-generate": "cd .. && bash .github/scripts/generate-exchange-skeleton.sh ./tmp_folder kucoin",
+    "sample-build": "cd ../tmp_folder/build && npm run build-single-exchange kucoin",
+    "sample-package": "cd ../tmp_folder/build && npm run pypi-packager kucoin"
   },
   "author": "",
   "license": "ISC",

@@ -17,6 +17,9 @@
             "request": "launch",
             "runtimeExecutable": "tsx",
             "program": "${file}",
+            "runtimeArgs": [
+                "${input:exName}",
+            ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "skipFiles": [

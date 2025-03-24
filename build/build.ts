@@ -139,25 +139,24 @@ class build {
         fs.writeFileSync (__dirname + '/../meta.json', stringified);
     }
 
-    replaceGlobalRegexes (text: string, array: any[]) {
+    replaceGlobalRegexes (text: string, array: any[] = []) {
         let newText = text;
         newText = regexAll (newText, [
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
         ]);
-        const otherStrings = {
+        const otherDefault = {
             '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
             '__PYTHON_PACKAGE_NAME__': undefined,
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
-        for (const key in otherStrings) {
-            const defaultValue = otherStrings[key];
+        for (const key in otherDefault) {
+            const defaultValue = otherDefault[key];
             let value = exchangeConfig[key] || defaultValue; // at first, read from config, if not, use default
             newText = newText.replace(new RegExp(`${key}`, 'g'), value);
         }
-        const sanitized = sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']);
-        newText = newText.replace(new RegExp(`__PYTHON_PACKAGE_KEY__`, 'g'), sanitized);
+        newText = newText.replace(/__PYTHON_PACKAGE_KEY__/g, sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']));
         return newText;
     }
 
@@ -178,7 +177,15 @@ class build {
         const destinationDir = __dirname + `/../README.md`;
         cp (__dirname + '/templates/README.md', destinationDir);
         let fileContent = fs.readFileSync(destinationDir, 'utf8');
-        fileContent = this.replaceGlobalRegexes(fileContent, []);
+        fileContent = this.replaceGlobalRegexes(fileContent);
+        fs.writeFileSync(destinationDir, fileContent);
+    }
+
+    generatePyprojectToml () {
+        const destinationDir = __dirname + `/../pyproject.toml`;
+        cp (__dirname + '/templates/pyproject.toml', destinationDir);
+        let fileContent = fs.readFileSync(destinationDir, 'utf8');
+        fileContent = this.replaceGlobalRegexes(fileContent);
         fs.writeFileSync(destinationDir, fileContent);
     }
 
