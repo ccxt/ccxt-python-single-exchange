@@ -12,8 +12,9 @@ git clone https://x-access-token:$GITHUB_API_TOKEN@github.com/ccxt/$EXCHANGE_NAM
 # at first, clean th directory (except .git directory) and copy all files
 echo "Clone finished"
 
-chmod +x .github/scripts/generate-exchange-skeleton.sh
-.github/scripts/generate-exchange-skeleton.sh $TEMP_DIR_GIT $EXCHANGE_NAME
+cd .github/scripts/
+chmod +x generate-exchange-skeleton.sh
+generate-exchange-skeleton.sh $TEMP_DIR_GIT $EXCHANGE_NAME
 
 cd $TEMP_DIR_GIT
 git config user.name github-actions
