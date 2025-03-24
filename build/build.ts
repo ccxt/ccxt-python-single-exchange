@@ -145,48 +145,46 @@ class build {
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
         ]);
-        const otherDefault = {
+        const defaults = {
             '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
-            '__PYTHON_PACKAGE_NAME__': undefined,
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
-        for (const key in otherDefault) {
-            const defaultValue = otherDefault[key];
-            let value = exchangeConfig[key] || defaultValue; // at first, read from config, if not, use default
+        for (const key in defaults) {
+            const defaultValue = defaults[key];
+            let value = exchangeConfig[key] || defaultValue; // use default if value not set
             newText = newText.replace(new RegExp(`${key}`, 'g'), value);
         }
-        newText = newText.replace(/__PYTHON_PACKAGE_KEY__/g, sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']));
+        // newText = newText.replace(/__PYTHON_PACKAGE_KEY__/g, sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']));
         return newText;
     }
 
+    commonContentReplace (filePath: string) {
+        let fileContent = fs.readFileSync(filePath, 'utf8');
+        fileContent = this.replaceGlobalRegexes(fileContent);
+        fs.writeFileSync(filePath, fileContent);
+    }
+    
     generateExamples () {
         const destinationDir = __dirname + `/../examples/`;
         cp (__dirname + '/templates/examples/', destinationDir);
         // iterate through files and make replacements
         const files = fs.readdirSync(destinationDir);
         for (const file of files) {
-            const filePath = destinationDir + file;
-            let fileContent = fs.readFileSync(filePath, 'utf8');
-            fileContent = this.replaceGlobalRegexes(fileContent, []);
-            fs.writeFileSync(filePath, fileContent);
+            this.commonContentReplace (destinationDir + file);
         }
     }
 
     generateReadme () {
-        const destinationDir = __dirname + `/../README.md`;
-        cp (__dirname + '/templates/README.md', destinationDir);
-        let fileContent = fs.readFileSync(destinationDir, 'utf8');
-        fileContent = this.replaceGlobalRegexes(fileContent);
-        fs.writeFileSync(destinationDir, fileContent);
+        const target = __dirname + `/../README.md`;
+        cp (__dirname + '/templates/README.md', target);
+        this.commonContentReplace (target);
     }
 
     generatePyprojectToml () {
-        const destinationDir = __dirname + `/../pyproject.toml`;
-        cp (__dirname + '/templates/pyproject.toml', destinationDir);
-        let fileContent = fs.readFileSync(destinationDir, 'utf8');
-        fileContent = this.replaceGlobalRegexes(fileContent);
-        fs.writeFileSync(destinationDir, fileContent);
+        const target = __dirname + `/../pyproject.toml`;
+        cp (__dirname + '/templates/pyproject.toml', target);
+        this.commonContentReplace (target);
     }
 
     async init (exchange:string) {

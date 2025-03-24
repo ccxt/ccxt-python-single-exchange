@@ -17,8 +17,3 @@ fi
 rm -rf $TEMP_DIR_GIT/*
 echo $EXCHANGE_NAME > $TEMP_DIR_GIT/exchange_name
 rsync -av --info=progress2 --info=name0 --exclude='.git/' ./ $TEMP_DIR_GIT
-rm -r $TEMP_DIR_GIT/.vscode/
-rm -f $TEMP_DIR_GIT/vsc-workspace.code-workspace
-rm -f $TEMP_DIR_GIT/README.md
-rm -f $TEMP_DIR_GIT/.github/scripts/*
-rm -f $TEMP_DIR_GIT/.github/workflows/generate-and-transfer-exchanges.yml

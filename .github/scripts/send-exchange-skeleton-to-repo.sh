@@ -11,8 +11,10 @@ echo "Cloning $EXCHANGE_NAME-python repository into $TEMP_DIR_GIT"
 git clone https://x-access-token:$GITHUB_API_TOKEN@github.com/ccxt/$EXCHANGE_NAME-python.git $TEMP_DIR_GIT
 # at first, clean th directory (except .git directory) and copy all files
 echo "Clone finished"
+
 chmod +x .github/scripts/generate-exchange-skeleton.sh
 .github/scripts/generate-exchange-skeleton.sh $TEMP_DIR_GIT $EXCHANGE_NAME
+
 cd $TEMP_DIR_GIT
 git config user.name github-actions
 git config user.email github-actions@github.com
