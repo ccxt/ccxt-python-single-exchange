@@ -4,9 +4,8 @@ import path from 'path'
 import { argvs, sanitizePackageName, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
 import { fileURLToPath } from 'url';
+// @ts-expect-error
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-
 
 
 class build {
@@ -144,7 +143,7 @@ class build {
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
         ]);
-        const defaults = {
+        const defaults: any = {
             '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
@@ -212,7 +211,7 @@ class build {
 
 
 
-    sortMethods(methods) {
+    sortMethods(methods: string[]) {
         return methods.sort((a, b) => {
             const aPriority = a.startsWith('fetch') || a.startsWith('create') ? 0 : 1;
             const bPriority = b.startsWith('fetch') || b.startsWith('create') ? 0 : 1;
@@ -221,7 +220,7 @@ class build {
     }
 
 
-    updateReadme(methods, rawMethods, wsMethods, readmePath) {
+    updateReadme(methods: string[], rawMethods: string[], wsMethods: string[], readmePath: string) {
         let readmeContent = fs.readFileSync(readmePath, 'utf8');
 
         const methodsFormatted = methods.map(method => `- \`${method}\``).join('\n');
@@ -265,7 +264,7 @@ class build {
         const filePath = this.destinationFolder + '/' + this.exchange + '.py';
         const wsFilePath = this.destinationFolder + '/pro/' + this.exchange + '.py';
         const abstractFile = this.destinationFolder + '/abstract/' + this.exchange + '.py';
-        const readme = 'README.md';
+        const readme =  __dirname + '/../README.md';
 
 
         const content = fs.readFileSync(filePath, 'utf8');

@@ -5,6 +5,7 @@ import * as semver from 'semver';
 import { argvs, sanitizePackageName, mkdir, jsonFromFile, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
 import { fileURLToPath } from 'url';
+// @ts-expect-error
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
@@ -21,7 +22,7 @@ class pypi {
         this.init(exchange);
     }
 
-    init(exchange) {
+    init(exchange: string) {
         // create skeleton dirs
         mkdir (this.tempPyDir);
         mkdir (this.tempPyDir + '/tests/'); // just empty folder
