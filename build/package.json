@@ -7,7 +7,7 @@
     "build-single-exchange": "tsx build.ts",
     "pypi-packager": "tsx pypi-packager.ts",
 
-    "sample-generate": "cd ../.github/scripts/ && bash generate-exchange-skeleton.sh ../../tmp_folder kucoin",
+    "sample-generate": "cd ../.github/scripts/ && bash generate-exchange-skeleton.sh ../../../tmp_folder kucoin",
     "sample-build": "cd ../../tmp_folder/build && npm run build-single-exchange",
     "sample-pypi": "cd ../../tmp_folder/build && npm run pypi-packager",
     "sample-all": "npm run sample-generate && npm run sample-build && npm run pypi-packager"
