@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sample-generate": "cd .. && bash .github/scripts/generate-exchange.sh ./tmp_folder kucoin",
+    "sample-generate": "cd .. && bash .github/scripts/generate-exchange-skeleton.sh ./tmp_folder kucoin",
     "build-single-exchange": "tsx build.ts",
     "pypi-packager": "tsx pypi-packager.ts"
   },
