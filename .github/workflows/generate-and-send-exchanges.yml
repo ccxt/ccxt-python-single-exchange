@@ -22,7 +22,6 @@ jobs:
       - name: Push to another repo
         run: |
           cd .github/scripts/
-          dir
           chmod +x ./send-exchange-skeleton-to-repo.sh
           ./send-exchange-skeleton-to-repo.sh "${{ matrix.exchange_name }}" "${{ github.event.head_commit.message }}"
         env:

@@ -13,7 +13,7 @@ git clone https://x-access-token:$GITHUB_API_TOKEN@github.com/ccxt/$EXCHANGE_NAM
 echo "Clone finished"
 
 chmod +x generate-exchange-skeleton.sh
-generate-exchange-skeleton.sh $TEMP_DIR_GIT $EXCHANGE_NAME
+./generate-exchange-skeleton.sh $TEMP_DIR_GIT $EXCHANGE_NAME
 
 cd $TEMP_DIR_GIT
 git config user.name github-actions
