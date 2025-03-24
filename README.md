@@ -13,3 +13,7 @@ this is internal dev repo, not meant to be used by end users.
 - If commit message contains the phrase `[PUBLISH]` (instead of `[BUILD]`) then repo will make a python package & submits it to pypi.org (you should set `PYPI_API_SECRET_SP` secret with pypi api key, under each repository). Versions are incremental by patch version at this moment.
 
 - All other things are WIP and can be customized.
+
+
+# how to test locally
+`cd build & npm run sample-all` - will create a `tmp_folder` aside the repo folder on your device. There you can run regular npm commands (instead of sample) from `build` folder
