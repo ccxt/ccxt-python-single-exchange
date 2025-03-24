@@ -37,7 +37,26 @@
                 "build",
                 "${input:exName}",
                 "--",
-                "${input:nodownload}",
+                "${input:extra_arg}",
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ],
+            "sourceMaps": true,
+            "localRoot": "${workspaceFolder}/build"
+        },
+        {
+            "name": "TSX: pypackager",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "pypi-packager",
+                "${input:exName}",
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
@@ -57,7 +76,7 @@
             "default": ""
         },
         {
-            "id": "nodownload",
+            "id": "extra_arg",
             "type": "promptString",
             "description": "Exchange name",
             "default": "--nodownload"

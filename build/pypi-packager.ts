@@ -12,14 +12,12 @@ class pypi {
 
     exchange:string;
     exchangeConfigs:any;
-    pypiApiSecret:any;
     rootDir:string = __dirname + `/../`;
     tempPyDir:string = this.rootDir + `/temp_pypi/`;
 
-    constructor(exchange: string, pypiApiSecret: string) {
+    constructor(exchange: string) {
         this.exchange = exchange;
         this.exchangeConfigs = jsonFromFile(__dirname + `/global-configs.json`)['exchanges'];
-        this.pypiApiSecret = pypiApiSecret;
         this.init(exchange);
     }
 
@@ -100,10 +98,7 @@ class pypi {
 
 }
 
-// check if environment variabele exist
-const pypiApiSecret = process.env.PYPI_API_SECRET_SP;
-if (!pypiApiSecret) {
-    console.error('Please set environment variable PYPI_API_SECRET_SP');
-    process.exit(1);
-}
-new pypi(exchangeArgv, pypiApiSecret);
+
+// if (! process.env.PYPI_API_SECRET_SP)
+
+new pypi(exchangeArgv);
