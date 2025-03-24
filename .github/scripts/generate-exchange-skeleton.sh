@@ -15,8 +15,8 @@ if [[ $TEMP_DIR_GIT != *"tmp"* ]] && [[ $TEMP_DIR_GIT != *"temp"* ]]; then
 fi
 
 rm -rf $TEMP_DIR_GIT/*
-rsync -av --info=progress2 --info=name0 --exclude='.git/' --exclude='build/ccxt/' ./ $TEMP_DIR_GIT
 echo $EXCHANGE_NAME > $TEMP_DIR_GIT/exchange_name
+rsync -av --info=progress2 --info=name0 --exclude='.git/' ./ $TEMP_DIR_GIT
 rm -r $TEMP_DIR_GIT/.vscode/
 rm -f $TEMP_DIR_GIT/vsc-workspace.code-workspace
 rm -f $TEMP_DIR_GIT/README.md
