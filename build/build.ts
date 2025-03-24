@@ -178,6 +178,7 @@ class build {
         const target = __dirname + `/../README.md`;
         cp (__dirname + '/templates/README.md', target);
         this.commonContentReplace (target);
+        this.updateReadmeWithMethods()
     }
 
     generatePyprojectToml () {
@@ -307,7 +308,6 @@ class build {
 
 
 // -------------------------------------------------------------------------------- //
-
 
 
 const builder = new build(exchangeArgv);
