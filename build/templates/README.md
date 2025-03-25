@@ -33,6 +33,9 @@ def main():
 import asyncio
 from __exchangeName__ import __ExchangeName__Async
 
+if sys.platform == 'win32':
+	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 async def main():
     instance = __ExchangeName__Async({})
     ob =  await instance.fetch_order_book("__EXAMPLE_SYMBOL__")
@@ -50,6 +53,9 @@ asyncio.run(main())
 
 ```Python
 from __exchangeName__ import __ExchangeName__Ws
+
+if sys.platform == 'win32':
+	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 async def main():
     instance = __ExchangeName__Ws({})
@@ -79,8 +85,6 @@ You can also construct custom requests to available "implicit" endpoints
         }
         response = await instance.public_post_info(request)
 ```
-
-
 
 
 ## Available methods
