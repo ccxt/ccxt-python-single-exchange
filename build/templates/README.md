@@ -30,6 +30,7 @@ def main():
 ### Async
 
 ```Python
+import sys
 import asyncio
 from __exchangeName__ import __ExchangeName__Async
 
@@ -44,6 +45,9 @@ async def main():
     # balance = await instance.fetch_balance()
     # order = await instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 100000)
 
+    # once you are done with the exchange
+    await instance.close()
+
 asyncio.run(main())
 ```
 
@@ -52,6 +56,7 @@ asyncio.run(main())
 ### Websockets
 
 ```Python
+import sys
 from __exchangeName__ import __ExchangeName__Ws
 
 if sys.platform == 'win32':
@@ -63,6 +68,9 @@ async def main():
         ob = await instance.watch_order_book("__EXAMPLE_SYMBOL__")
         print(ob)
         # orders = await instance.watch_orders("__EXAMPLE_SYMBOL__")
+
+    # once you are done with the exchange
+    await instance.close()
 ```
 
 
